@@ -8,7 +8,7 @@ public class Board implements IBoard {
 	private static final int DEFAULT_SIZE = 10;
 	private int size;
 	String name;
-	Character[][] ships;
+	private Character[][] ships;
 	boolean[][] hits;
 
 	public Board() {

@@ -4,20 +4,40 @@ import ensta.util.Orientation;
 
 public class AbstractShip {
 
+    private Character label;
+    private String name;
+    private int length;
+    private Orientation orientation;
+
+    public AbstractShip(String ship_name, Character ship_label, int ship_length, Orientation ship_orientation) {
+        name = ship_name;
+        label = ship_label;
+        length = ship_length;
+        orientation = ship_orientation;
+    }
+
     public int getLength() {
-        return 0;
+        return length;
     }
 
     public Orientation getOrientation() {
-        return null;
+        return orientation;
+    }
+
+    public void setOrientation(Orientation new_orientation) {
+        this.orientation = new_orientation;
     }
 
     public boolean isSunk() {
         return false;
     }
 
-    public Object getName() {
-        return null;
+    public String getName() {
+        return name;
+    }
+
+    public Character getLabel() {
+        return label;
     }
 
 }
