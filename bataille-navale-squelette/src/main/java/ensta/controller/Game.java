@@ -40,7 +40,6 @@ public class Game {
 	public Game init() {
 		if (!loadSave()) {
 
-
 			// TODO init boards
 
 			// TODO init this.player1 & this.player2
@@ -83,7 +82,7 @@ public class Game {
 					done = updateScore();
 
 					if (!done) {
-//						save();
+						// save();
 					}
 				} while (strike && !done);
 			}
@@ -96,29 +95,29 @@ public class Game {
 	}
 
 	private void save() {
-//		try {
-//			// TODO bonus 2 : uncomment
-//			// if (!SAVE_FILE.exists()) {
-//			// SAVE_FILE.getAbsoluteFile().getParentFile().mkdirs();
-//			// }
-//
-//			// TODO bonus 2 : serialize players
-//
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
+		// try {
+		// // TODO bonus 2 : uncomment
+		// // if (!SAVE_FILE.exists()) {
+		// // SAVE_FILE.getAbsoluteFile().getParentFile().mkdirs();
+		// // }
+		//
+		// // TODO bonus 2 : serialize players
+		//
+		// } catch (IOException e) {
+		// e.printStackTrace();
+		// }
 	}
 
 	private boolean loadSave() {
-//		if (SAVE_FILE.exists()) {
-//			try {
-//				// TODO bonus 2 : deserialize players
-//
-//				return true;
-//			} catch (IOException | ClassNotFoundException e) {
-//				e.printStackTrace();
-//			}
-//		}
+		// if (SAVE_FILE.exists()) {
+		// try {
+		// // TODO bonus 2 : deserialize players
+		//
+		// return true;
+		// } catch (IOException | ClassNotFoundException e) {
+		// e.printStackTrace();
+		// }
+		// }
 		return false;
 	}
 
@@ -144,16 +143,16 @@ public class Game {
 		String msg;
 		ColorUtil.Color color = ColorUtil.Color.RESET;
 		switch (hit) {
-		case MISS:
-			msg = hit.toString();
-			break;
-		case STRIKE:
-			msg = hit.toString();
-			color = ColorUtil.Color.RED;
-			break;
-		default:
-			msg = hit.toString() + " coulé";
-			color = ColorUtil.Color.RED;
+			case MISS:
+				msg = hit.toString();
+				break;
+			case STRIKE:
+				msg = hit.toString();
+				color = ColorUtil.Color.RED;
+				break;
+			default:
+				msg = hit.toString() + " coulé";
+				color = ColorUtil.Color.RED;
 		}
 		msg = String.format("%s Frappe en %c%d : %s", incoming ? "<=" : "=>", ((char) ('A' + coords.getX())),
 				(coords.getY() + 1), msg);
