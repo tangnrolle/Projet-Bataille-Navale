@@ -176,6 +176,7 @@ public class Board implements IBoard {
 
 	@Override
 	public Hit sendHit(Coords res) {
+
 		return Hit.MISS;
 	}
 }

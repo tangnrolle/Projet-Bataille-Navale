@@ -35,7 +35,7 @@ public final class InputHelper {
 	 */
 	public static ShipInput readShipInput() {
 		ShipInput res = new ShipInput();
-		String[] validOrientations = { "north", "south", "east", "west" }; // North, South, East, West
+		String[] validOrientations = { "north", "south", "east", "west" };
 		boolean done = false;
 		do {
 			try {
@@ -49,7 +49,8 @@ public final class InputHelper {
 						done = true;
 					}
 				}
-			} catch (Exception e) {}
+			} catch (Exception e) {
+			}
 			if (!done) {
 				System.err.println("Format incorrect! Entrez la position sous forme 'A0 north'");
 			}
