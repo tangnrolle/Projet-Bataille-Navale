@@ -51,7 +51,7 @@ public class Board implements IBoard {
 			row = "";
 			row = row + (i + 1) + " ";
 			for (int j = 0; j < size; j++) {
-				row = row + ships[i][j] + " ";
+				row = row + ships[j][i] + " ";
 			}
 			System.out.println(row);
 		}
@@ -72,36 +72,41 @@ public class Board implements IBoard {
 			row = row + (i + 1) + " ";
 			for (int j = 0; j < size; j++) {
 				if (hits[i][j] == true)
-					row = row + "X ";
+					row = row + "\u001B[31m" + "x " + "\u001B[0m";
 				else
 					row = row + ". ";
 			}
 			System.out.println(row);
 		}
-
+		System.out.println();
 	}
 
 	public boolean canPutShip(AbstractShip ship, Coords coords) {
 		Orientation o = ship.getOrientation();
 		int dx = 0, dy = 0;
 		if (o == Orientation.EAST) {
-			if (coords.getY() + ship.getLength() >= this.size) {
+			if (coords.getX() + ship.getLength() > this.size) {
+				System.out.println("Ce bateau sort de la grille ! Recommencez svp :\n");
 				return false;
+
 			}
 			dx = 1;
 		} else if (o == Orientation.SOUTH) {
-			if (coords.getX() + ship.getLength() >= this.size) {
+			if (coords.getY() + ship.getLength() > this.size) {
+				System.out.println("Ce bateau sort de la grille ! Recommencez svp :\n");
 				return false;
 			}
 			dy = 1;
 
 		} else if (o == Orientation.NORTH) {
-			if (coords.getX() + 1 - ship.getLength() < 0) {
+			if (coords.getY() - ship.getLength() < 0) {
+				System.out.println("Ce bateau sort de la grille ! Recommencez svp :\n");
 				return false;
 			}
 			dy = -1;
 		} else if (o == Orientation.WEST) {
-			if (coords.getY() + 1 - ship.getLength() < 0) {
+			if (coords.getX() - ship.getLength() < 0) {
+				System.out.println("Ce bateau sort de la grille ! Recommencez svp :\n");
 				return false;
 			}
 			dx = -1;
@@ -111,6 +116,7 @@ public class Board implements IBoard {
 
 		for (int i = 0; i < ship.getLength(); ++i) {
 			if (this.hasShip(iCoords)) {
+				System.out.println("Vous ne pouvez pas superposer les bateaux ! Recommencez svp :\n");
 				return false;
 			}
 			iCoords.setX(iCoords.getX() + dx);
@@ -134,14 +140,14 @@ public class Board implements IBoard {
 
 			for (int i = 0; i < ship.getLength(); ++i) {
 
-				if (o == Orientation.SOUTH || o == Orientation.NORTH) {
-
-					ships[coords.getX() - 1 + o.getIncrement() * i][coords.getY() - 1] = ship.getLabel();
-				}
-
 				if (o == Orientation.EAST || o == Orientation.WEST) {
 
-					ships[coords.getX() - 1][coords.getY() - 1 + o.getIncrement() * i] = ship.getLabel();
+					ships[coords.getX() + o.getIncrement() * i][coords.getY()] = ship.getLabel();
+				}
+
+				else if (o == Orientation.SOUTH || o == Orientation.NORTH) {
+
+					ships[coords.getX()][coords.getY() + o.getIncrement() * i] = ship.getLabel();
 				}
 			}
 
@@ -160,7 +166,7 @@ public class Board implements IBoard {
 			}
 			return true;
 		}
-		// throw error
+		System.err.println("Coordonnées hors de la grille");
 		return false;
 	}
 

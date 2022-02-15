@@ -40,26 +40,29 @@ public class Player {
 
 		do {
 			AbstractShip ship = ships[i];
-			String msg = String.format("placer %d : %s(%d)", i + 1, ship.getName(), ship.getLength());
-			System.out.println(msg);
-			InputHelper.ShipInput res = InputHelper.readShipInput();
+			boolean success = false;
 
-			ship.setOrientation(Orientation.valueOf(res.orientation.toUpperCase()));
-			System.out.println(ship.getOrientation());
+			do {
+				String msg = String.format("placer %d : %s(%d)", i + 1, ship.getName(), ship.getLength());
+				System.out.println(msg);
 
-			Coords ship_coords = new Coords(res.y, res.x);
+				InputHelper.ShipInput res = InputHelper.readShipInput();
 
-			System.out.println(ship_coords.x + "," + ship_coords.iy);
+				ship.setOrientation(Orientation.valueOf(res.orientation.toUpperCase()));
 
-			board.putShip(ship, ship_coords);
+				Coords ship_coords = new Coords(res.x, res.y);
 
-			System.out.println("Bateau placé avec succès");
-			done = true;
+				success = board.putShip(ship, ship_coords);
+
+			} while (!success);
 
 			++i;
 			done = i == 5;
 
 			board.print();
+
+			System.out.println("\n" + ship.getName() + " placé avec succès.\n");
+
 		} while (!done);
 	}
 
