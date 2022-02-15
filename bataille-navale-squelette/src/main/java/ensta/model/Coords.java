@@ -5,6 +5,8 @@ public class Coords {
     int iy;
 
     public Coords(Coords coords) {
+        this.x = coords.x;
+        this.iy = coords.iy;
     }
 
     public Coords() {
@@ -13,24 +15,33 @@ public class Coords {
     }
 
     public Coords(int x, int iy) {
+        this.x = x;
+        this.iy = iy;
     }
 
     public int getX() {
-        return 0;
+        return x;
     }
 
     public void setX(int i) {
+        this.x = i;
+    }
+
+    public void setY(int j) {
+        this.iy = j;
     }
 
     public int getY() {
-        return 0;
+        return iy;
     }
 
     public void setCoords(Coords res) {
+        this.x = res.x;
+        this.iy = res.iy;
     }
 
     public boolean isInBoard(int size) {
-        return false;
+        return (x >= 0 && x < size && iy >= 0 && iy < size);
     }
 
     public static Coords randomCoords(int size) {
