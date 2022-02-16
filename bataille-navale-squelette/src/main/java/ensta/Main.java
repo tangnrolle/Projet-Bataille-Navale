@@ -20,7 +20,7 @@ public class Main {
         Board B1 = new Board("MyBoard");
         Board B2 = new Board("OpponentBoard");
 
-        // Coords C = new Coords(2, 3);
+        Coords C = new Coords(2, 3);
 
         Submarine S1 = new Submarine();
         Submarine S2 = new Submarine();
@@ -37,6 +37,8 @@ public class Main {
 
         Player P1 = new Player(B1, B2, L);
         P1.putShips();
+        B1.sendHit(C);
+        B1.print();
 
         // B1.putShip(S1, C);
         // B1.print();

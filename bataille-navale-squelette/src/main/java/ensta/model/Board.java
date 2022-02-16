@@ -90,9 +90,9 @@ public class Board implements IBoard {
 				if (hits[j][i] == null)
 					row = row + ". ";
 				else if (hits[j][i] == false)
-					row = row + "x ";
+					row = row + "X ";
 				else if (hits[j][i] == true)
-					row = row + ColorUtil.colorize("x ", ColorUtil.Color.RED);
+					row = row + ColorUtil.colorize("X ", ColorUtil.Color.RED);
 			}
 			System.out.println(row);
 		}
@@ -203,9 +203,40 @@ public class Board implements IBoard {
 		return hits[coords.getX()][coords.getY()];
 	}
 
-	@Override
 	public Hit sendHit(Coords res) {
+		if (res.isInBoard(size)) {
 
-		return Hit.MISS;
+			ShipState hitpoint = ships[res.getX()][res.getY()];
+
+			if (!hasShip(res)) {
+				hitpoint.setStruck(true);
+				return Hit.MISS;
+			}
+
+			else {
+
+				if (hitpoint.isStruck()) {
+
+					System.out.println("Cette case a déjà été frappée. Recommencez svp : ");
+					return null;
+
+				} else {
+
+					hitpoint.getShip().addStrike();
+					hitpoint.setStruck(true);
+
+					if (hitpoint.getShip().isSunk()) {
+						String sunk_ship = hitpoint.getShip().getName();
+						System.out.println(sunk_ship + " a été coulé.");
+						return Hit.valueOf(sunk_ship.toUpperCase());
+					} else {
+						return Hit.STRIKE;
+					}
+				}
+			}
+		}
+		System.out.println("Coordonnées hors de la grille. Recommencez svp : ");
+		return null;
 	}
+
 }

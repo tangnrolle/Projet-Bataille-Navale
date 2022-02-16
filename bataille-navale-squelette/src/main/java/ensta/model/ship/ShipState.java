@@ -32,7 +32,7 @@ public class ShipState {
     public String toString() {
         if (this.struck) {
             if (this.refShip == null) {
-                return ("x ");
+                return ("X ");
             } else {
                 return (String.valueOf(ColorUtil.colorize(refShip.getLabel(),
                         ColorUtil.Color.RED)) + " ");
