@@ -1,16 +1,31 @@
 package ensta.model;
 
 import ensta.model.ship.AbstractShip;
+import ensta.model.ship.ShipState;
+import ensta.util.ColorUtil;
 import ensta.util.Orientation;
+import ensta.util.ColorUtil.Color;
 import ensta.model.Coords;
 
 public class Board implements IBoard {
 
 	private static final int DEFAULT_SIZE = 10;
 	private int size;
-	String name;
-	private Character[][] ships;
-	boolean[][] hits;
+	private String name;
+	private ShipState[][] ships;
+	private Boolean[][] hits;
+
+	public String getName() {
+		return name;
+	}
+
+	public ShipState[][] getShips() {
+		return ships;
+	}
+
+	public Boolean[][] getHits() {
+		return hits;
+	}
 
 	public Board() {
 	}
@@ -18,12 +33,12 @@ public class Board implements IBoard {
 	public Board(String my_name, int my_size) {
 		size = my_size;
 		name = my_name;
-		ships = new Character[size][size];
-		hits = new boolean[size][size];
+		ships = new ShipState[size][size];
+		hits = new Boolean[size][size];
 
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
-				ships[i][j] = '.';
+				ships[i][j] = new ShipState();
 			}
 		}
 
@@ -50,8 +65,9 @@ public class Board implements IBoard {
 		for (int i = 0; i < size; i++) {
 			row = "";
 			row = row + (i + 1) + " ";
+
 			for (int j = 0; j < size; j++) {
-				row = row + ships[j][i] + " ";
+				row = row + ships[j][i].toString();
 			}
 			System.out.println(row);
 		}
@@ -71,10 +87,12 @@ public class Board implements IBoard {
 			row = "";
 			row = row + (i + 1) + " ";
 			for (int j = 0; j < size; j++) {
-				if (hits[i][j] == true)
-					row = row + "\u001B[31m" + "x " + "\u001B[0m";
-				else
+				if (hits[j][i] == null)
 					row = row + ". ";
+				else if (hits[j][i] == false)
+					row = row + "x ";
+				else if (hits[j][i] == true)
+					row = row + ColorUtil.colorize("x ", ColorUtil.Color.RED);
 			}
 			System.out.println(row);
 		}
@@ -138,16 +156,21 @@ public class Board implements IBoard {
 
 			Orientation o = ship.getOrientation();
 
-			for (int i = 0; i < ship.getLength(); ++i) {
+			if (o == Orientation.EAST || o == Orientation.WEST) {
 
-				if (o == Orientation.EAST || o == Orientation.WEST) {
+				for (int i = 0; i < ship.getLength(); ++i) {
 
-					ships[coords.getX() + o.getIncrement() * i][coords.getY()] = ship.getLabel();
+					ships[coords.getX() + o.getIncrement() * i][coords.getY()] = new ShipState(ship);
+
 				}
+			}
 
-				else if (o == Orientation.SOUTH || o == Orientation.NORTH) {
+			else if (o == Orientation.SOUTH || o == Orientation.NORTH) {
 
-					ships[coords.getX()][coords.getY() + o.getIncrement() * i] = ship.getLabel();
+				for (int i = 0; i < ship.getLength(); ++i) {
+
+					ships[coords.getX()][coords.getY() + o.getIncrement() * i] = new ShipState(ship);
+
 				}
 			}
 
@@ -161,7 +184,7 @@ public class Board implements IBoard {
 	public boolean hasShip(Coords coords) {
 
 		if (coords.isInBoard(size)) {
-			if (ships[coords.getX()][coords.getY()] == '.') {
+			if (ships[coords.getX()][coords.getY()].getShip() == null) {
 				return false;
 			}
 			return true;
