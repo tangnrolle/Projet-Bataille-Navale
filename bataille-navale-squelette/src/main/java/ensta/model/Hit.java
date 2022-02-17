@@ -1,4 +1,5 @@
 package ensta.model;
+
 import java.util.NoSuchElementException;
 
 public enum Hit {
@@ -9,13 +10,15 @@ public enum Hit {
     BATTLESHIP(4, "Croiseur"),
     CARRIER(5, "Porte-avion");
 
-    /* ***
+    /*
+     * ***
      * Attributs
      */
     private int value;
     private String label;
 
-    /* ***
+    /*
+     * ***
      * Constructeur
      */
     Hit(int value, String label) {
@@ -23,7 +26,8 @@ public enum Hit {
         this.label = label;
     }
 
-    /* ***
+    /*
+     * ***
      * Méthodes
      */
     public static Hit fromInt(int value) {
@@ -33,6 +37,10 @@ public enum Hit {
             }
         }
         throw new NoSuchElementException("no enum for value " + value);
+    }
+
+    public int getValue() {
+        return this.value;
     }
 
     public String toString() {

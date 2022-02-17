@@ -206,6 +206,10 @@ public class Board implements IBoard {
 	public Hit sendHit(Coords res) {
 		if (res.isInBoard(size)) {
 
+			System.out.println(
+					"Frappe " + this.name + " en " + Character.toUpperCase((char) (res.getX() + 'a'))
+							+ (res.getY() + 1));
+
 			ShipState hitpoint = ships[res.getX()][res.getY()];
 
 			if (!hasShip(res)) {

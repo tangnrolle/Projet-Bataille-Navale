@@ -12,6 +12,13 @@ public interface IBoard {
     public int getSize();
 
     /**
+     * Get the name of the Board
+     * 
+     * @return the name of the Board
+     */
+    public String getName();
+
+    /**
      * Put the given ship at the given position
      * 
      * @param ship   The ship to place on the board
