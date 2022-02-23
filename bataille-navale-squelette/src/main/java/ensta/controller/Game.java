@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import ensta.model.Board;
 import ensta.model.Coords;
@@ -16,6 +17,7 @@ import ensta.model.ship.Carrier;
 import ensta.model.ship.Destroyer;
 import ensta.model.ship.Submarine;
 import ensta.util.ColorUtil;
+import ensta.ai.PlayerAI;
 
 public class Game {
 
@@ -40,11 +42,18 @@ public class Game {
 	public Game init() {
 		if (!loadSave()) {
 
-			// TODO init boards
+			Board my_board = new Board("My Board");
+			Board opponent_board = new Board("Opponent Board");
 
-			// TODO init this.player1 & this.player2
+			List<AbstractShip> my_ships = createDefaultShips();
+			List<AbstractShip> opponent_ships = createDefaultShips();
 
-			// TODO place player ships
+			this.player1 = new Player(my_board, opponent_board, my_ships);
+			this.player2 = new PlayerAI(opponent_board, my_board, opponent_ships);
+
+			player1.putShips();
+			player2.putShips();
+
 		}
 		return this;
 	}
@@ -61,8 +70,14 @@ public class Game {
 		b1.print();
 		boolean done;
 		do {
-			hit = Hit.MISS; // TODO player1 send a hit
-			boolean strike = hit != Hit.MISS; // TODO set this hit on his board (b1)
+			hit = null;
+
+			while (hit == null) {
+				hit = player1.sendHit(coords);
+			}
+
+			boolean strike = hit != Hit.MISS;
+			b1.setHit(strike, coords);
 
 			done = updateScore();
 			b1.print();
@@ -72,7 +87,10 @@ public class Game {
 
 			if (!done && !strike) {
 				do {
-					hit = Hit.MISS; // TODO player2 send a hit.
+					hit = null;
+					while (hit == null) {
+						hit = player2.sendHit(coords);
+					}
 
 					strike = hit != Hit.MISS;
 					if (strike) {
@@ -91,7 +109,7 @@ public class Game {
 
 		SAVE_FILE.delete();
 		System.out.println(String.format("joueur %d gagne", player1.isLose() ? 2 : 1));
-		sin.close();
+		// sin.close();
 	}
 
 	private void save() {

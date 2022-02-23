@@ -7,7 +7,6 @@ import ensta.model.Hit;
 import ensta.model.IBoard;
 import ensta.model.ship.AbstractShip;
 import ensta.util.Orientation;
-import java.util.Random;
 
 public class BattleShipsAI implements Serializable {
 
@@ -62,8 +61,6 @@ public class BattleShipsAI implements Serializable {
 	 */
 	public void putShips(AbstractShip ships[]) {
 		Coords coords = new Coords();
-		// Orientation orientation;
-		// Orientation[] orientations = Orientation.values();
 
 		for (AbstractShip ship : ships) {
 			do {

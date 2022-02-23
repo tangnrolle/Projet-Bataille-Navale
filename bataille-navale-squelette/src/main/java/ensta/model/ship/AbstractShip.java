@@ -31,10 +31,7 @@ public class AbstractShip {
     }
 
     public boolean isSunk() {
-        if (strikeCount >= length)
-            return true;
-        else
-            return false;
+        return (strikeCount >= length);
     }
 
     public String getName() {
@@ -50,7 +47,7 @@ public class AbstractShip {
     }
 
     public void addStrike() {
-        this.strikeCount++;
+        strikeCount++;
     }
 
 }

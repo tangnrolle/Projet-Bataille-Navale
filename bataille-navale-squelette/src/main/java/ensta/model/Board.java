@@ -52,8 +52,13 @@ public class Board implements IBoard {
 
 		System.out.println("\nNavires:");
 
-		String col_idx = "  ";
+		String col_idx = "";
 		String row;
+		int max_indent = String.valueOf(size).length();
+		int indent;
+
+		for (int t = 0; t < max_indent; t++)
+			col_idx = col_idx + " ";
 
 		for (int k = 0; k < size; k++) {
 			int col = k + 65;
@@ -64,7 +69,11 @@ public class Board implements IBoard {
 
 		for (int i = 0; i < size; i++) {
 			row = "";
-			row = row + (i + 1) + " ";
+			indent = max_indent - String.valueOf(i + 1).length();
+			row = row + (i + 1);
+
+			for (int k = 0; k <= indent; k++)
+				row = row + " ";
 
 			for (int j = 0; j < size; j++) {
 				row = row + ships[j][i].toString();
@@ -85,7 +94,12 @@ public class Board implements IBoard {
 
 		for (int i = 0; i < size; i++) {
 			row = "";
-			row = row + (i + 1) + " ";
+			indent = max_indent - String.valueOf(i + 1).length();
+			row = row + (i + 1);
+
+			for (int k = 0; k <= indent; k++)
+				row = row + " ";
+
 			for (int j = 0; j < size; j++) {
 				if (hits[j][i] == null)
 					row = row + ". ";
@@ -117,13 +131,13 @@ public class Board implements IBoard {
 			dy = 1;
 
 		} else if (o == Orientation.NORTH) {
-			if (coords.getY() - ship.getLength() < 0) {
+			if (coords.getY() + 1 - ship.getLength() < 0) {
 				System.out.println("Ce bateau sort de la grille ! Recommencez svp :\n");
 				return false;
 			}
 			dy = -1;
 		} else if (o == Orientation.WEST) {
-			if (coords.getX() - ship.getLength() < 0) {
+			if (coords.getX() + 1 - ship.getLength() < 0) {
 				System.out.println("Ce bateau sort de la grille ! Recommencez svp :\n");
 				return false;
 			}
@@ -206,38 +220,34 @@ public class Board implements IBoard {
 	public Hit sendHit(Coords res) {
 		if (res.isInBoard(size)) {
 
-			System.out.println(
-					"Frappe " + this.name + " en " + Character.toUpperCase((char) (res.getX() + 'a'))
-							+ (res.getY() + 1));
-
 			ShipState hitpoint = ships[res.getX()][res.getY()];
 
-			if (!hasShip(res)) {
+			if (!hitpoint.isStruck()) {
+
 				hitpoint.setStruck(true);
-				return Hit.MISS;
-			}
 
-			else {
+				if (!hasShip(res)) {
 
-				if (hitpoint.isStruck()) {
-
-					System.out.println("Cette case a déjà été frappée. Recommencez svp : ");
-					return null;
+					return Hit.MISS;
 
 				} else {
 
 					hitpoint.getShip().addStrike();
-					hitpoint.setStruck(true);
 
 					if (hitpoint.getShip().isSunk()) {
-						String sunk_ship = hitpoint.getShip().getName();
-						System.out.println(sunk_ship + " a été coulé.");
-						return Hit.valueOf(sunk_ship.toUpperCase());
+
+						return Hit.valueOf(hitpoint.getShip().getName().toUpperCase());
+
 					} else {
+
 						return Hit.STRIKE;
 					}
 				}
 			}
+
+			System.out.println("Cette case a déjà été frappée. Recommencez svp : ");
+			return null;
+
 		}
 		System.out.println("Coordonnées hors de la grille. Recommencez svp : ");
 		return null;
